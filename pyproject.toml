@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "drf-proj"
+version = "0.1.0"
+description = ""
+authors = ["Mamed Mamedov <demam777@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+python-dotenv = "^1.0.1"
+django = "^5.0.4"
+djangorestframework = "^3.15.1"
+django-filter = "^24.2"
+tasks = "^2.8.0"
+services = "^0.1.1"
+validators = "^0.28.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
