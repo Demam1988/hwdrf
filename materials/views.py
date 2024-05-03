@@ -4,13 +4,11 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.filters import OrderingFilter
 
-
 from .models import Course, Lesson, Subscription, Payment
 from .paginators import MyPaginator
 from .permissions import IsOwner, IsModerator
 from .serializers import CourseSerializer, PaymentSerializer
 from users.models import UserRoles
-
 
 
 class CourseViewSet(ModelViewSet):
@@ -113,6 +111,3 @@ class PaymentCreateAPIView(generics.CreateAPIView):
         new_payment = serializer.save()
         new_payment.user = self.request.user
         new_payment.save()
-
-
-

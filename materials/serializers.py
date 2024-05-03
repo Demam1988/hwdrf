@@ -35,7 +35,6 @@ class PaymentSerializer(serializers.ModelSerializer):
     payment_url = SerializerMethodField()
 
     def get_payment_url(self, payment):
-
         return get_payment_link(payment)
 
     class Meta:

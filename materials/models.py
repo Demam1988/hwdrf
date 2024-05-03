@@ -8,7 +8,8 @@ class Course(models.Model):
     title = models.CharField(max_length=100, **NULLABLE, verbose_name='название')
     description = models.TextField(**NULLABLE, verbose_name='описание')
     picture = models.ImageField(upload_to='courses/', verbose_name='превью', **NULLABLE)
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE, verbose_name='добавил курс')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE,
+                              verbose_name='добавил курс')
     price = models.IntegerField(verbose_name='цена')
 
     def __str__(self):
@@ -25,7 +26,8 @@ class Lesson(models.Model):
     picture = models.ImageField(upload_to='lessons/', **NULLABLE, verbose_name='превью')
     link = models.URLField(max_length=200, **NULLABLE, verbose_name='ссылка')
     course = models.ForeignKey('Course', on_delete=models.CASCADE, related_name='lessons', verbose_name='курс')
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE, verbose_name='добавил урок')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE,
+                              verbose_name='добавил урок')
     price = models.IntegerField(verbose_name='цена', **NULLABLE)
 
     def __str__(self):
@@ -51,7 +53,8 @@ class Payment(models.Model):
     course = models.ForeignKey('Course', on_delete=models.CASCADE, **NULLABLE, verbose_name='оплаченный курс')
     lesson = models.ForeignKey('Lesson', on_delete=models.CASCADE, **NULLABLE, verbose_name='оплаченный урок')
     amount = models.IntegerField(verbose_name='сумма платежа')
-    payment_method = models.CharField(max_length=20, choices=PAYMENT_CHOICES, default='CARD', verbose_name='способ оплаты')
+    payment_method = models.CharField(max_length=20, choices=PAYMENT_CHOICES, default='CARD',
+                                      verbose_name='способ оплаты')
 
     def __str__(self):
         return f'{self.date_of_payment} - {self.amount}'
@@ -63,7 +66,8 @@ class Payment(models.Model):
 
 class Subscription(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='subscriptions', verbose_name='курс')
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='subscriptions', verbose_name='пользователь')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='subscriptions',
+                             verbose_name='пользователь')
     is_active = models.BooleanField(default=False, verbose_name='активна')
 
     def __str__(self):

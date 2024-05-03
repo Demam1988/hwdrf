@@ -8,7 +8,6 @@ from config import settings
 
 @shared_task
 def send_mail_for_update(lesson, email):
-
     try:
         result = send_mail(
             subject='Обновление по курсу!',

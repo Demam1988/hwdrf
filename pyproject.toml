@@ -15,6 +15,7 @@ tasks = "^2.8.0"
 services = "^0.1.1"
 validators = "^0.28.1"
 stripe = "^9.5.0"
+celery = "^5.4.0"
 
 
 [build-system]
