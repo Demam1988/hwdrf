@@ -37,3 +37,4 @@ def get_payment_link(payment):
     )
 
     return payment['url']
+
