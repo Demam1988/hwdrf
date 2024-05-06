@@ -1,21 +1,27 @@
 [tool.poetry]
-name = "drf-proj"
+name = "hwdrf"
 version = "0.1.0"
 description = ""
-authors = ["Mamed Mamedov <demam777@gmail.com>"]
+authors = ["Your Name <you@example.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-python-dotenv = "^1.0.1"
-django = "^5.0.4"
-djangorestframework = "^3.15.1"
-django-filter = "^24.2"
-tasks = "^2.8.0"
-services = "^0.1.1"
-validators = "^0.28.1"
-stripe = "^9.5.0"
-celery = "^5.4.0"
+django = "^4.2.6"
+pillow = "^10.0.1"
+psycopg2-binary = "^2.9.9"
+djangorestframework = "^3.14.0"
+python-dotenv = "^1.0.0"
+django-filter = "^23.3"
+djangorestframework-simplejwt = "^5.3.0"
+flake8 = "^6.1.0"
+coverage = "^7.3.2"
+drf-yasg = "^1.21.7"
+stripe = "^7.0.0"
+eventlet = "^0.33.3"
+celery = "^5.3.4"
+redis = "^5.0.1"
+django-celery-beat = "^2.5.0"
 
 
 [build-system]

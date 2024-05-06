@@ -1,18 +1,22 @@
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.filters import OrderingFilter
+from rest_framework import generics
 
-from .models import Course, Lesson, Subscription, Payment
+from django_filters.rest_framework import DjangoFilterBackend
+
+from .models import Course, Lesson, Payment, Subscription
 from .paginators import MyPaginator
 from .permissions import IsOwner, IsModerator
-from .serializers import CourseSerializer, PaymentSerializer
+from .serializers import (CourseSerializer, LessonSerializer,
+                          PaymentSerializer, SubscriptionSerializer)
 from users.models import UserRoles
+from materials.tasks import send_mail_for_update
 
 
 class CourseViewSet(ModelViewSet):
     """ ViewSet курса """
+
     queryset = Course.objects.all()
     permission_classes = [IsAuthenticated]
     serializer_class = CourseSerializer
@@ -53,39 +57,78 @@ class CourseViewSet(ModelViewSet):
         return super(CourseViewSet, self).get_permissions()
 
 
+class SubscriptionListAPIView(generics.ListAPIView):
+    """ Подписки список """
+
+    serializer_class = SubscriptionSerializer
+    queryset = Subscription.objects.all()
+    permission_classes = [IsAuthenticated]
+
+
+class SubscriptionCreateAPIView(generics.CreateAPIView):
+    """ Создание подписки """
+
+    serializer_class = SubscriptionSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class SubscriptionDestroyAPIView(generics.DestroyAPIView):
+    """ Удаление подписки """
+
+    serializer_class = SubscriptionSerializer
+    queryset = Subscription.objects.all()
+    permission_classes = [IsAuthenticated]
+
+
 class LessonCreateAPIView(generics.CreateAPIView):
     """ Создание урока """
 
-    queryset = Subscription.objects.all()
-    permission_classes = [IsAuthenticated]
+    serializer_class = LessonSerializer
+    queryset = Lesson.objects.all()
+    permission_classes = [IsAuthenticated, ~IsModerator]
+
+    def perform_create(self, serializer):
+        """ Сохраняем пользователя, добавившего урок, отправляем email
+        подписчикам """
+
+        new_lesson = serializer.save()
+        new_lesson.owner = self.request.user
+        subscribers = Subscription.objects.filter(course=new_lesson.course)
+        user_emails = [subscriber.user.email for subscriber in subscribers]
+        send_mail_for_update.delay(new_lesson.course.title, user_emails)
+        new_lesson.save()
 
 
 class LessonListAPIView(generics.ListAPIView):
     """ Список уроков """
 
-    queryset = Subscription.objects.all()
+    serializer_class = LessonSerializer
+    queryset = Lesson.objects.all()
+    pagination_class = MyPaginator
     permission_classes = [IsAuthenticated]
 
 
 class LessonRetriveAPIView(generics.RetrieveAPIView):
     """ Детально об уроке """
 
-    queryset = Subscription.objects.all()
-    permission_classes = [IsAuthenticated]
+    serializer_class = LessonSerializer
+    queryset = Lesson.objects.all()
+    permission_classes = [IsAuthenticated, IsOwner | IsModerator | IsAdminUser]
 
 
 class LessonUpdateAPIView(generics.UpdateAPIView):
     """ Обновление урока """
 
-    queryset = Subscription.objects.all()
-    permission_classes = [IsAuthenticated]
+    serializer_class = LessonSerializer
+    queryset = Lesson.objects.all()
+    permission_classes = [IsAuthenticated, IsOwner | IsModerator | IsAdminUser]
 
 
 class LessonDestroyAPIView(generics.DestroyAPIView):
     """ Удаление урока """
 
     queryset = Lesson.objects.all()
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsOwner | IsAdminUser]
 
 
 class PaymentListAPIView(generics.ListAPIView):

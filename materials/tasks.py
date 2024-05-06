@@ -10,8 +10,8 @@ from config import settings
 def send_mail_for_update(lesson, email):
     try:
         result = send_mail(
-            subject='Обновление по курсу!',
-            message=f'Курс {lesson} был обновлён!',
+            subject="Обновление по курсу!",
+            message=f"Курс {lesson} был обновлён!",
             from_email=settings.EMAIL_HOST_USER,
             recipient_list=email,
             fail_silently=False,

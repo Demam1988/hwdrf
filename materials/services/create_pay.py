@@ -2,7 +2,7 @@ import os
 import stripe
 
 
-stripe.api_key = os.getenv('STRIPE_SECRET_KEY')
+stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
 
 def get_payment_link(payment):
@@ -26,7 +26,7 @@ def get_payment_link(payment):
     )
 
     payment = stripe.checkout.Session.create(
-        success_url='https://example.com/success',
+        success_url="https://example.com/success",
         line_items=[
             {
                 "price": price["id"],
@@ -36,5 +36,4 @@ def get_payment_link(payment):
         mode="payment",
     )
 
-    return payment['url']
-
+    return payment["url"]

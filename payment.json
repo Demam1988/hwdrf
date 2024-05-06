@@ -1,0 +1,62 @@
+[
+  {
+    "model": "education.payment",
+    "pk": 1,
+    "fields": {
+      "user": 2,
+      "date_of_payment": "2023-10-08",
+      "course": 1,
+      "lesson": null,
+      "sum_of_payment": "18000",
+      "payment_method": "CASH"
+    }
+  },
+  {
+    "model": "education.payment",
+    "pk": 2,
+    "fields": {
+      "user": 3,
+      "date_of_payment": "2023-10-09",
+      "course": 1,
+      "lesson": null,
+      "sum_of_payment": "15700",
+      "payment_method": "CARD"
+    }
+  },
+  {
+    "model": "education.payment",
+    "pk": 3,
+    "fields": {
+      "user": 1,
+      "date_of_payment": "2023-10-09",
+      "course": null,
+      "lesson": 2,
+      "sum_of_payment": "2500",
+      "payment_method": "CARD"
+    }
+  },
+  {
+    "model": "education.payment",
+    "pk": 4,
+    "fields": {
+      "user": 2,
+      "date_of_payment": "2023-10-10",
+      "course": null,
+      "lesson": 2,
+      "sum_of_payment": "2800",
+      "payment_method": "CASH"
+    }
+  },
+  {
+    "model": "education.payment",
+    "pk": 5,
+    "fields": {
+      "user": 3,
+      "date_of_payment": "2023-10-11",
+      "course": 3,
+      "lesson": null,
+      "sum_of_payment": "85000",
+      "payment_method": "CARD"
+    }
+  }
+]
