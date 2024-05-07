@@ -1,3 +1,4 @@
+from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.filters import OrderingFilter
@@ -54,16 +55,25 @@ class CourseViewSet(ModelViewSet):
         updated_course.owner = self.request.user
         updated_course.save()
 
+    # def get_permissions(self):
+    #     """Получаем разрешения"""
+    #
+    #     if self.request.method in ["CREATE", "DELETE"]:
+    #         self.permission_classes = [IsOwner, ~IsModerator]
+    #     else:
+    #         self.permission_classes = [
+    #             IsOwner,
+    #         ]
+    #     return super(CourseViewSet, self).get_permissions()
+
     def get_permissions(self):
         """Получаем разрешения"""
 
-        if self.request.method in ["CREATE", "DELETE"]:
+        if self.action == 'create':
             self.permission_classes = [IsOwner, ~IsModerator]
-        else:
-            self.permission_classes = [
-                IsOwner,
-            ]
-        return super(CourseViewSet, self).get_permissions()
+        elif self.action == 'list':
+            self.permission_classes = [IsOwner]
+        return [permission() for permission in permission_classes]
 
 
 class SubscriptionListAPIView(generics.ListAPIView):

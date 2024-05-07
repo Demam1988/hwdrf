@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "hwdrf"
+name = "drf-proj"
 version = "0.1.0"
 description = ""
 authors = ["Your Name <you@example.com>"]
@@ -22,6 +22,7 @@ eventlet = "^0.33.3"
 celery = "^5.3.4"
 redis = "^5.0.1"
 django-celery-beat = "^2.5.0"
+openapi = "^1.1.0"
 
 
 [build-system]

@@ -1,9 +1,10 @@
 from django.contrib import admin
 from django.urls import path
-from django.urls import include
-from drf_yasg import openapi
-from drf_yasg.views import get_schema_view
 from rest_framework import permissions
+from django.urls import include
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -20,7 +21,7 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("education.urls", namespace="education")),
+    path("", include("materials.urls", namespace="materials")),
     path("users/", include("users.urls", namespace="users")),
     path(
         "swagger/",
