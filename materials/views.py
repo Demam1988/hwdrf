@@ -35,23 +35,13 @@ class CourseViewSet(ModelViewSet):
         return []
 
     def perform_create(self, serializer):
-        """ Сохраняем пользователя, добавившего урок, отправляем email
-        подписчикам """
+        course = serializer.save()
+        course.owner = self.request.user
+        course.save()
 
-        new_lesson = serializer.save()
-        new_lesson.owner = self.request.user
-        subscribers = Subscription.objects.filter(course=new_lesson.course)
-        user_emails = [subscriber.user.email for subscriber in subscribers]
-        send_mail_for_update.delay(new_lesson.course.title, user_emails)
-        new_lesson.save()
-
-    def perform_update(self, serializer):
-        """ Обновление курса """
-
-        updated_course = serializer.save()
-        updated_course.owner = self.request.user
-        updated_course.save()
-
+    def perform_update(self, serializer, *args, **kwargs):
+        send_mail_for_update.delay(self.kwargs.get('pk'))
+        super().perform_update(serializer)
 
     def get_permissions(self):
         """Получаем разрешения"""
