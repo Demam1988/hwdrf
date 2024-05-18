@@ -12,7 +12,7 @@ from .permissions import IsOwner, IsModerator
 from .serializers import (CourseSerializer, LessonSerializer,
                           PaymentSerializer, SubscriptionSerializer)
 from users.models import UserRoles
-from materials.tasks import send_mail_for_update
+from users.tasks import check_last_login
 
 
 class CourseViewSet(ModelViewSet):
@@ -40,7 +40,7 @@ class CourseViewSet(ModelViewSet):
         course.save()
 
     def perform_update(self, serializer, *args, **kwargs):
-        send_mail_for_update.delay(self.kwargs.get('pk'))
+        check_last_login.delay(self.kwargs.get('pk'))
         super().perform_update(serializer)
 
     def get_permissions(self):
