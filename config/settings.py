@@ -145,7 +145,7 @@ CELERY_TASK_TIME_LIMIT = 30 * 60
 
 CELERY_BEAT_SCHEDULE = {
     'check_inactive_users': {
-        'task': 'materials.tasks.check_inactive_users',
+        'task': 'materials.tasks.check_last_login',
         'schedule': crontab(minute=0, hour=0),
     },
 }
