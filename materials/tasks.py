@@ -1,24 +1,22 @@
-import smtplib
-
+from datetime import timezone
 from celery import shared_task
 from django.core.mail import send_mail
-
-from config import settings
+from config.settings import EMAIL_HOST_USER
+from users.models import User
 
 
 @shared_task
-def send_mail_for_update(lesson, email):
-    try:
-        result = send_mail(
-            subject="Обновление по курсу!",
-            message=f"Курс {lesson} был обновлён!",
-            from_email=settings.EMAIL_HOST_USER,
-            recipient_list=email,
-            fail_silently=False,
-        )
+def send_course_update_email(email):
+    """ Отправляет сообщение пользователю об обновлении """
+    subject = 'Обновление курса'
+    message = 'Здравствуйте! Мы рады сообщить вам о том, что материалы курса были обновлены.'
+    send_mail(subject, message, EMAIL_HOST_USER, [email])
 
-        if result:
-            print("OK")
 
-    except smtplib.SMTPException as e:
-        print(str(e))
+@shared_task
+def check_inactive_users():
+    one_month_ago = timezone.now() - timezone.timedelta(days=30)
+    inactive_users = User.objects.filter(last_login__lt=one_month_ago)
+    for user in inactive_users:
+        user.is_active = False
+        user.save()
